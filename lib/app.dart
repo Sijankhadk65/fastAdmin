@@ -8,30 +8,32 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          appBarTheme: AppBarTheme(
-            color: Colors.white,
-            iconTheme: IconThemeData(
-              color: Colors.black,
-            ),
-            textTheme: TextTheme(
-              headline6: GoogleFonts.oswald(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+          color: Colors.white,
+          elevation: 0,
+          iconTheme: IconThemeData(
+            color: Colors.black,
           ),
-          tabBarTheme: TabBarTheme(
-            labelColor: Colors.black,
+          textTheme: TextTheme(
+            headline6: GoogleFonts.oswald(
+              color: Colors.black,
+              fontSize: 25,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-        home: Provider(
-          create: (_) => LoginBloc(),
-          dispose: (context, LoginBloc bloc) => bloc.dispose(),
-          child: Root(),
-        ));
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.black,
+        ),
+      ),
+      home: Provider(
+        create: (_) => LoginBloc(),
+        dispose: (context, LoginBloc bloc) => bloc.dispose(),
+        child: Root(),
+      ),
+    );
   }
 }

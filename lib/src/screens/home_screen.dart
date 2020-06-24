@@ -33,42 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     _loginBloc.getVendor(widget.user.email);
     return Scaffold(
-
-        // drawer: Drawer(
-        //   child: Column(
-        //     children: [
-        //       DrawerHeader(
-        //         child: Container(color: Colors.blue),
-        //       ),
-        //       RaisedButton(
-        //         onPressed: () {
-        //           Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (_) => Provider(
-        //                       child: MenuScreen(),
-        //                       create: (_) => MenuBloc(),
-        //                       dispose: (context, MenuBloc bloc) =>
-        //                           bloc.dispose())));
-        //         },
-        //         child: Text("menu"),
-        //       ),
-        //       RaisedButton(
-        //         onPressed: () {
-        //           Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (_) => Provider(
-        //                       create: (_) => OnlineOrderBloc(),
-        //                       child: OrdersScreen(),
-        //                       dispose: (context, OnlineOrderBloc bloc) =>
-        //                           bloc.dispose())));
-        //         },
-        //         child: Text("Orders"),
-        //       ),
-        //     ],
-        //   ),
-        // ),
         appBar: AppBar(
           title: Text("FAST: ADMIN"),
         ),
@@ -92,20 +56,65 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Text(
-                            snapshot.data.name.toUpperCase(),
-                            style: GoogleFonts.nunito(
-                              fontSize: 35,
-                              fontStyle: FontStyle.italic,
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                snapshot.data.name.toUpperCase(),
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                          AnimatedContainer(
+                            decoration: BoxDecoration(
+                              color: snapshot.data.isBusy
+                                  ? Colors.red
+                                  : Colors.white,
+                              boxShadow: snapshot.data.isBusy
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(7, 7),
+                                        blurRadius: 10,
+                                      ),
+                                    ]
+                                  : [],
+                              borderRadius: BorderRadius.circular(
+                                5,
+                              ),
+                            ),
+                            duration: Duration(milliseconds: 300),
+                            margin: EdgeInsets.only(left: 10),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    "BUSY",
+                                    style: GoogleFonts.oswald(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: snapshot.data.isBusy
+                                          ? Colors.white
+                                          : Colors.black12,
+                                    ),
+                                  ),
+                                  Switch.adaptive(
+                                    value: snapshot.data.isBusy,
+                                    activeColor: Colors.white,
+                                    onChanged: (value) {
+                                      _loginBloc.updateStatus(
+                                          value, snapshot.data.name);
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          Switch.adaptive(
-                            value: snapshot.data.isBusy,
-                            onChanged: (value) {
-                              _loginBloc.updateStatus(
-                                  value, snapshot.data.name);
-                            },
-                          )
                         ],
                       ),
                       Container(

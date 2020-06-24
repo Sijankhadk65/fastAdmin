@@ -61,7 +61,6 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        padding: EdgeInsets.only(top: 10, left: 5, right: 5),
         child: ListView(
           physics: ClampingScrollPhysics(),
           children: [
@@ -185,6 +184,73 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
 
                   return null;
                 }),
+            TextField(
+              maxLines: 10,
+              onChanged: _menuBloc.changeItemDescription,
+              decoration: InputDecoration(
+                labelText: "Description",
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                StreamBuilder<String>(
+                    stream: _menuBloc.currentAddon,
+                    builder: (context, snapshot) {
+                      return Expanded(
+                        child: TextField(
+                          onChanged: _menuBloc.changeCurrentAddOn,
+                          decoration: InputDecoration(
+                            errorText: snapshot.error,
+                          ),
+                        ),
+                      );
+                    }),
+                RawMaterialButton(
+                  fillColor: Colors.blue,
+                  onPressed: _menuBloc.addItemAddon,
+                  child: Icon(Icons.add),
+                )
+              ],
+            ),
+            StreamBuilder<List<String>>(
+              stream: _menuBloc.itemAddons,
+              builder: (context, snapshot) {
+                return Container(
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      top: 10,
+                      bottom: 10,
+                      right: 10,
+                    ),
+                    margin: EdgeInsets.only(
+                      top: 10,
+                      bottom: 10,
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "Item Addons",
+                        ),
+                        snapshot.hasData
+                            ? ListView(
+                                shrinkWrap: true,
+                                children: snapshot.data
+                                    .map<Widget>(
+                                      (e) => Container(
+                                        child: Text(e),
+                                      ),
+                                    )
+                                    .toList(),
+                              )
+                            : Center(
+                                child: Text("Add Addons"),
+                              ),
+                      ],
+                    ));
+              },
+            ),
             StreamBuilder(
               stream: _menuBloc.isSaving,
               builder: (context, snapshot) {

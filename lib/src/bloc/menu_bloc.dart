@@ -9,6 +9,7 @@ import 'package:rxdart/rxdart.dart';
 
 class MenuBloc {
   final _repo = Repository();
+  List<String> _itemAddons = [];
   List<ItemCategory> itemCategories = [];
   final BehaviorSubject<List<String>> _categoriesSubject =
       BehaviorSubject<List<String>>();
@@ -48,6 +49,23 @@ class MenuBloc {
   Stream<bool> get isSaving => _isSavingSubject.stream;
   Function(bool) get changeSavingStatus => _isSavingSubject.sink.add;
 
+  final BehaviorSubject<List<String>> _itemAddonsSubject =
+      BehaviorSubject<List<String>>();
+  Stream<List<String>> get itemAddons => _itemAddonsSubject.stream;
+  Function(List<String>) get changeItemAddons => _itemAddonsSubject.sink.add;
+  Function(String) get itemAddonError => _itemAddonsSubject.sink.addError;
+
+  final BehaviorSubject<String> _currentAddonSubject =
+      BehaviorSubject<String>();
+  Stream<String> get currentAddon => _currentAddonSubject.stream;
+  Function(String) get changeCurrentAddOn => _currentAddonSubject.sink.add;
+
+  final BehaviorSubject<String> _itemDescriptionSubject =
+      BehaviorSubject<String>();
+  Stream<String> get itemDescription => _itemDescriptionSubject.stream;
+  Function(String) get changeItemDescription =>
+      _itemDescriptionSubject.sink.add;
+
   // This is for the path of the image
   final BehaviorSubject<String> _imagepathSubject = BehaviorSubject<String>();
   Stream<String> get imagepath => _imagepathSubject.stream;
@@ -65,8 +83,18 @@ class MenuBloc {
     });
   }
 
-  Stream<bool> canAddNewItem() =>
-      Rx.combineLatest3(itemName, itemPrice, imagepath, (a, b, c) => true);
+  addItemAddon() {
+    _itemAddons.add(_currentAddonSubject.value);
+    changeItemAddons(_itemAddons);
+  }
+
+  removeItemAddon(String addOn) {
+    _itemAddons.remove(addOn);
+    changeItemAddons(_itemAddons);
+  }
+
+  Stream<bool> canAddNewItem() => Rx.combineLatest4(
+      itemName, itemPrice, imagepath, itemDescription, (a, b, c, d) => true);
   Future<void> saveNewItem(String vendor) async {
     final _imageTask = await _repo.savePhoto(File(_imagepathSubject.value),
         basename(File(_imagepathSubject.value).path));
@@ -82,6 +110,8 @@ class MenuBloc {
         "isHotAndNew": _isHotAndNewSubject.value,
         "vendor": vendor,
         "createdAt": DateTime.now().toIso8601String(),
+        "addOn": _itemAddons,
+        "description": _itemDescriptionSubject.value,
       },
     );
   }
@@ -152,5 +182,8 @@ class MenuBloc {
     _categoriesSubject.close();
     _categorySubject.close();
     _isSavingSubject.close();
+    _itemAddonsSubject.close();
+    _currentAddonSubject.close();
+    _itemDescriptionSubject.close();
   }
 }

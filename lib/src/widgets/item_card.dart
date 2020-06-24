@@ -32,7 +32,6 @@ class _ItemCardState extends State<ItemCard> {
     _menuBloc.getItemAvaibility(widget.item.createdAt);
     return Container(
         margin: EdgeInsets.all(10),
-        width: 200,
         child: Material(
           elevation: 5,
           borderRadius: BorderRadius.circular(5),
@@ -76,11 +75,13 @@ class _ItemCardState extends State<ItemCard> {
                 ),
                 Row(
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      child: Text(
-                        widget.item.name,
-                        style: GoogleFonts.oswald(fontSize: 18),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          widget.item.name,
+                          style: GoogleFonts.oswald(fontSize: 18),
+                        ),
                       ),
                     ),
                     StreamBuilder<Object>(

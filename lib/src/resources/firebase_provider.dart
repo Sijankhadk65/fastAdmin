@@ -24,7 +24,7 @@ class FirebaseProvider {
   }
 
   Stream<DocumentSnapshot> getVendorInfo(String vendorName) {
-    return _provider.document("vendors/Burger House").snapshots();
+    return _provider.document("vendors/$vendorName").snapshots();
   }
 
   Future<void> saveMenuItem(Map<String, dynamic> newItem) {

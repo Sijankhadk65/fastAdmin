@@ -74,6 +74,18 @@ class _$VendorSerializer implements StructuredSerializer<Vendor> {
         ..add(serializers.serialize(object.isBusy,
             specifiedType: const FullType(bool)));
     }
+    if (object.lat != null) {
+      result
+        ..add('lat')
+        ..add(serializers.serialize(object.lat,
+            specifiedType: const FullType(double)));
+    }
+    if (object.lang != null) {
+      result
+        ..add('lang')
+        ..add(serializers.serialize(object.lang,
+            specifiedType: const FullType(double)));
+    }
     return result;
   }
 
@@ -128,6 +140,14 @@ class _$VendorSerializer implements StructuredSerializer<Vendor> {
           result.isBusy = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
+        case 'lat':
+          result.lat = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
+        case 'lang':
+          result.lang = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
       }
     }
 
@@ -154,6 +174,10 @@ class _$Vendor extends Vendor {
   final BuiltList<String> categories;
   @override
   final bool isBusy;
+  @override
+  final double lat;
+  @override
+  final double lang;
 
   factory _$Vendor([void Function(VendorBuilder) updates]) =>
       (new VendorBuilder()..update(updates)).build();
@@ -167,7 +191,9 @@ class _$Vendor extends Vendor {
       this.location,
       this.tags,
       this.categories,
-      this.isBusy})
+      this.isBusy,
+      this.lat,
+      this.lang})
       : super._();
 
   @override
@@ -189,7 +215,9 @@ class _$Vendor extends Vendor {
         location == other.location &&
         tags == other.tags &&
         categories == other.categories &&
-        isBusy == other.isBusy;
+        isBusy == other.isBusy &&
+        lat == other.lat &&
+        lang == other.lang;
   }
 
   @override
@@ -200,14 +228,20 @@ class _$Vendor extends Vendor {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc($jc(0, name.hashCode), photoURI.hashCode),
-                                closeTime.hashCode),
-                            openTime.hashCode),
-                        minOrder.hashCode),
-                    location.hashCode),
-                tags.hashCode),
-            categories.hashCode),
-        isBusy.hashCode));
+                            $jc(
+                                $jc(
+                                    $jc(
+                                        $jc($jc(0, name.hashCode),
+                                            photoURI.hashCode),
+                                        closeTime.hashCode),
+                                    openTime.hashCode),
+                                minOrder.hashCode),
+                            location.hashCode),
+                        tags.hashCode),
+                    categories.hashCode),
+                isBusy.hashCode),
+            lat.hashCode),
+        lang.hashCode));
   }
 
   @override
@@ -221,7 +255,9 @@ class _$Vendor extends Vendor {
           ..add('location', location)
           ..add('tags', tags)
           ..add('categories', categories)
-          ..add('isBusy', isBusy))
+          ..add('isBusy', isBusy)
+          ..add('lat', lat)
+          ..add('lang', lang))
         .toString();
   }
 }
@@ -267,6 +303,14 @@ class VendorBuilder implements Builder<Vendor, VendorBuilder> {
   bool get isBusy => _$this._isBusy;
   set isBusy(bool isBusy) => _$this._isBusy = isBusy;
 
+  double _lat;
+  double get lat => _$this._lat;
+  set lat(double lat) => _$this._lat = lat;
+
+  double _lang;
+  double get lang => _$this._lang;
+  set lang(double lang) => _$this._lang = lang;
+
   VendorBuilder();
 
   VendorBuilder get _$this {
@@ -280,6 +324,8 @@ class VendorBuilder implements Builder<Vendor, VendorBuilder> {
       _tags = _$v.tags?.toBuilder();
       _categories = _$v.categories?.toBuilder();
       _isBusy = _$v.isBusy;
+      _lat = _$v.lat;
+      _lang = _$v.lang;
       _$v = null;
     }
     return this;
@@ -312,7 +358,9 @@ class VendorBuilder implements Builder<Vendor, VendorBuilder> {
               location: location,
               tags: _tags?.build(),
               categories: _categories?.build(),
-              isBusy: isBusy);
+              isBusy: isBusy,
+              lat: lat,
+              lang: lang);
     } catch (_) {
       String _$failedField;
       try {
